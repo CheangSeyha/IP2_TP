@@ -3,6 +3,10 @@ import { Body } from '@nestjs/common';
 import { RecieptService } from './reciept.service';
 import { RecieptCreateDto } from './dto/create-recietpt.dto';
 import { UpdateRecieptDto } from './dto/update-reciept.dto';
+import { UseGuards } from '@nestjs/common';
+import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
+
+@UseGuards(ApiKeyGuard)
 @Controller('reciept')
 export class RecieptController {
   constructor(private readonly recieptService: RecieptService) {}
