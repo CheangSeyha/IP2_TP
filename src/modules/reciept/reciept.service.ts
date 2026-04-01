@@ -23,7 +23,14 @@ export class RecieptService {
       name: Dto.name,
       price: Dto.price,
     });
-    return this.recieptRepo.save(reciept);
+
+    const saved = await this.recieptRepo.save(reciept);
+
+    this.notificationsService.notify('reciept.created', {
+      recieptId: saved.id,
+      price: saved.price,
+    });
+    return saved;
   }
 
   async update(recieptId: string, Dto: UpdateRecieptDto) {
@@ -32,13 +39,22 @@ export class RecieptService {
     if (Dto.issuedAt !== undefined) reciept.issuedAt = new Date(Dto.issuedAt);
     if (Dto.name !== undefined) reciept.name = Dto.name;
     if (Dto.price !== undefined) reciept.price = Dto.price;
-    return this.recieptRepo.save(reciept);
+    const updated = await this.recieptRepo.save(reciept);
+    this.notificationsService.notify('reciept.updated', {
+      recieptId: updated.id,
+      price: updated.price,
+    });
+    return updated;
   }
 
   async remove(recieptId: string) {
     const reciept = await this.recieptRepo.findOneBy({ id: recieptId });
     if (!reciept) throw new Error('Receipt not found');
     await this.recieptRepo.remove(reciept);
+    this.notificationsService.notify('reciept.deleted', {
+      recieptId: reciept.id,
+      price: reciept.price,
+    });
     return { delete: true, recieptId };
   }
 }
