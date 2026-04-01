@@ -3,13 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RecieptModule } from './modules/reciept/reciept.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecieptEntity } from './Entity/reciept.entity';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    RecieptModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -26,6 +26,8 @@ import { RecieptEntity } from './Entity/reciept.entity';
         },
       }),
     }),
+    RecieptModule,
+    NotificationsModule,
   ],
 })
 export class AppModule {}

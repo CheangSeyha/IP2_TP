@@ -3,12 +3,14 @@ import { RecieptCreateDto } from './dto/create-recietpt.dto';
 import { UpdateRecieptDto } from './dto/update-reciept.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RecieptEntity } from 'src/Entity/reciept.entity';
+import { NotificationsService } from '../notifications/notifications.service';
 import { Repository } from 'typeorm';
 @Injectable()
 export class RecieptService {
   constructor(
     @InjectRepository(RecieptEntity)
     private readonly recieptRepo: Repository<RecieptEntity>,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   findAll() {
